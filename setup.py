@@ -28,7 +28,7 @@ for line in requirements:
 
 setuptools.setup(
     name="mykeepin-sdk",
-    version="0.1.0",
+    version="0.1.1",
     license="LGPLv3+",
     maintainer="Coinplug, Inc.",
     maintainer_email="inyong@coinplug.com",

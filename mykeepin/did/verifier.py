@@ -27,10 +27,10 @@ class DidVerifier:
         if data.startswith('0x'):
             data = data[2:]
         nonce = Web3.soliditySha3(
-            abi_types=['string', 'string', 'uint', 'string', 'string'],
+            abi_types=['string', 'string', 'uint256', 'string', 'string'],
             values=[code, service_id, type_, state, data]
         )
-        return nonce.hex()
+        return nonce.hex()[2:]
 
     def verify_signature_for_auth(self, service_id: str, state: str, code: str,
                                   type_: int, data_hash: str, signature: str) -> bool:

@@ -21,4 +21,9 @@
 
 
 ## SDK 설치
-```pip install mykeepin-sdk```
+```
+pip install mykeepin-sdk
+
+# jwcrypto 0.8.dev1 미 업로드로 인해 직접 다운로드 받아야 함
+pip install git+git://github.com/latchset/jwcrypto
+```
