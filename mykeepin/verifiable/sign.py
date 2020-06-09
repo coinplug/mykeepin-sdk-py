@@ -1,6 +1,7 @@
 from jwcrypto import jwt
 from jwcrypto.jwk import JWK, InvalidJWKType
 
+from mykeepin.exceptions import ValidationError
 from mykeepin.verifiable import Verifiable
 from mykeepin.verifiable.credential import VerifiableCredential
 from mykeepin.verifiable.presentation import VerifiablePresentation
@@ -10,14 +11,14 @@ class VerifiableSignedJWT:
     @staticmethod
     def __sign(verifiable: Verifiable, algorithm: str, kid: str, nonce: str, key: JWK, is_serialize=False):
         if not isinstance(verifiable, (VerifiableCredential, VerifiablePresentation)):
-            raise TypeError("'verifiable' must be Verifiable")
+            raise ValidationError(param='verifiable', type_name=Verifiable)
         claims = verifiable.to_jwt_claims(nonce=nonce)
 
         if not kid or not isinstance(kid, str):
-            raise TypeError("'kid' must be string")
+            raise ValidationError(param='kid', type_name=str)
 
         if not algorithm or not isinstance(algorithm, str):
-            raise TypeError("'algorithm' must be string")
+            raise ValidationError(param='algorithm', type_name=str)
 
         header = {"kid": kid, "typ": "JWT", "alg": algorithm}
         jwts = jwt.JWT(header=header, claims=claims, algs=[algorithm])
@@ -32,7 +33,7 @@ class VerifiableSignedJWT:
         if not isinstance(key, JWK):
             raise InvalidJWKType
         if not algorithm or not isinstance(algorithm, str):
-            raise TypeError("'algorithm' must be string")
+            raise ValidationError(param='algorithm', type_name=str)
 
         verifier = jwt.JWT(algs=[algorithm])
         verifier.deserialize(jwt=token, key=key)

@@ -1,3 +1,4 @@
+from mykeepin.exceptions import ValidationError
 from mykeepin.utils import validate_did_format
 from mykeepin.verifiable import Verifiable
 
@@ -15,7 +16,7 @@ class VerifiablePresentation(Verifiable):
     @issuer.setter
     def issuer(self, i: str):
         if not isinstance(i, str):
-            raise TypeError("'issuer' must be string")
+            raise ValidationError(param='issuer', type_name=str)
         self._issuer = validate_did_format(i)
 
     @property
@@ -25,10 +26,10 @@ class VerifiablePresentation(Verifiable):
     @verifiable_credentials.setter
     def verifiable_credentials(self, vcs: [str]):
         if not isinstance(vcs, list):
-            raise TypeError("'verifiable_credentials' must be list")
+            raise ValidationError(param='verifiable_credentials', type_name=list)
         for vc in vcs:
             if not isinstance(vc, str):
-                raise ValueError("'raw_vc' must be string")
+                raise ValidationError(param='raw_vc', type_name=str)
             if not vc.count('.') == 2:
                 raise ValueError("VC format unrecognized")
         self._verifiable_credentials = vcs

@@ -1,6 +1,7 @@
 import requests
 
 from mykeepin.constans import MAINNET_RESOLVER_URL, TESTNET_RESOLVER_URL
+from mykeepin.exceptions import DidNotFoundException
 
 from mykeepin.utils import validate_did_format
 from mykeepin.did.document import DidDocument
@@ -25,8 +26,11 @@ class DIDResolver:
                 headers={'no-cache': 'true' if no_cache else 'false'}
             )
             data = r.json()
+            if not data.get('didDocument'):
+                raise DidNotFoundException(error_message=data.get('message'))
+
         except Exception as e:
-            raise e
+            raise DidNotFoundException(error_message=e)
 
         did_document = DidDocument(document=data['didDocument'])
         _method_metadata = data.get('methodMetadata')

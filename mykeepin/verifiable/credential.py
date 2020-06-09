@@ -1,6 +1,7 @@
 import copy
 import datetime
 
+from mykeepin.exceptions import ValidationError, RangeError
 from mykeepin.utils import validate_did_format
 from mykeepin.verifiable import Verifiable
 
@@ -26,7 +27,7 @@ class VerifiableCredential(Verifiable):
     @issuer.setter
     def issuer(self, i: str):
         if not isinstance(i, str):
-            raise TypeError("'issuer' must be string")
+            raise ValidationError(param='issuer', type_name=str)
         self._issuer = validate_did_format(i)
 
     @property
@@ -36,9 +37,9 @@ class VerifiableCredential(Verifiable):
     @issuance_date.setter
     def issuance_date(self, i: datetime.datetime):
         if not isinstance(i, datetime.datetime):
-            raise TypeError("'issuance_date' must be datetime")
+            raise ValidationError(param='issuance_date', type_name=datetime.datetime)
         if self.expiration_date and (i > self.expiration_date):
-            raise ValueError
+            raise RangeError(param='issuance_date', range='issuance_date > expiration_date')
         self._issuance_date = i
 
     @property
@@ -49,9 +50,9 @@ class VerifiableCredential(Verifiable):
     def expiration_date(self, e: datetime.datetime):
         if e is not None:
             if not isinstance(e, datetime.datetime):
-                raise TypeError("'expiration_date' must be datetime")
+                raise ValidationError(param='expiration_date', type_name=datetime.datetime)
             if self.issuance_date and (e < self.issuance_date):
-                raise ValueError
+                raise RangeError(param='expiration_date', range='expiration_date < issuance_date')
         self._expiration_date = e
 
     @property
@@ -61,7 +62,7 @@ class VerifiableCredential(Verifiable):
     @credential_subject.setter
     def credential_subject(self, c: dict):
         if not isinstance(c, dict):
-            raise TypeError("'credential_subject' must be dict")
+            raise ValidationError(param='credential_subject', type_name=dict)
         self._credential_subject = c
 
     def to_jwt_claims(self, nonce: str):

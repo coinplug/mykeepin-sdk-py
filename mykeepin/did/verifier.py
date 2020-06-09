@@ -9,6 +9,7 @@ from ecdsa.curves import SECP256k1
 from mykeepin.crypto.signature import Signature
 from mykeepin.did.document import DidDocument
 from mykeepin.did.resolver import DIDResolver
+from mykeepin.exceptions import DidNotFoundException
 from mykeepin.verifiable.sign import VerifiableSignedJWT
 
 
@@ -40,7 +41,7 @@ class DidVerifier:
 
     @staticmethod
     def verify_signature(nonce: str, signature: str) -> str:
-        address = Signature().address_from_signature(nonce, signature)
+        address = Signature().has_recover_address_from_signature(nonce, signature)
         return address
 
     def verify_jws(self, raw_jws: str, did_document: DidDocument or None):
@@ -60,7 +61,7 @@ class DidVerifier:
 
         pub_key_of_issuer = self.document.get_public_key(key_id=key_id)
         if not pub_key_of_issuer:
-            raise Exception(f"Not Found KeyID in did document {issuer}")
+            raise DidNotFoundException(error_message=f"Not Found KeyID in did document {issuer}")
 
         user_pub_key_hex = pub_key_of_issuer.get('publicKeyHex')
         if not user_pub_key_hex:

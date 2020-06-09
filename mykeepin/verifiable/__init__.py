@@ -1,5 +1,7 @@
 from abc import ABCMeta
 
+from mykeepin.exceptions import ValidationError
+
 
 class Verifiable(metaclass=ABCMeta):
     def __init__(self, id_=None, types=None, contexts=None):
@@ -20,7 +22,7 @@ class Verifiable(metaclass=ABCMeta):
     def id_(self, i: str):
         if i is not None:
             if not isinstance(i, str):
-                raise ValueError("'id'의 데이터는 str 이어야 합니다.")
+                raise ValidationError(param='id_', type_name=str)
         self._id = i
 
     @property
@@ -31,7 +33,7 @@ class Verifiable(metaclass=ABCMeta):
     def types(self, t: [str]):
         for data in t:
             if not isinstance(data, str):
-                raise ValueError("'types'의 데이터는 str 이어야 합니다.")
+                raise ValidationError(param='types', type_name=str)
         self._types = t
 
     @property
@@ -41,5 +43,5 @@ class Verifiable(metaclass=ABCMeta):
     @contexts.setter
     def contexts(self, c: dict):
         if not isinstance(c, dict):
-            raise ValueError("'contexts'는 dict 이어야 합니다.")
+            raise ValidationError(param='contexts', type_name=dict)
         self._contexts = c
