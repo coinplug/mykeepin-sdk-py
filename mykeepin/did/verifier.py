@@ -80,6 +80,9 @@ class DidVerifier:
             data = json.loads(self.verify_jws(vc, None).claims)
             self.vc_list.append(data)
 
+    def get_verifiable_credentials(self):
+        return self.vc_list
+
     def find_verifiable_credential(self, issuer_did, credential_name):
         for vc in self.vc_list:
             if vc['iss'] == issuer_did and credential_name in vc['vc']['type']:
