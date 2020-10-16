@@ -20,7 +20,7 @@ class DidDocument:
                 if pub_key.get('publicKeyHash') and (pub_key.get('publicKeyHash') == address):
                     return True
                 if pub_key.get('publicKeyHex'):
-                    _address = Signature().to_address(pub_key['publicKeyHex'])
+                    _address = Signature.to_address(pub_key['publicKeyHex'])
                     if _address == address:
                         return True
         return False

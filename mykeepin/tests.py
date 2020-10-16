@@ -13,11 +13,11 @@ from mykeepin.verifiable.presentation import VerifiablePresentation
 AA_KID = "did:meta:testnet:00000000000000000000000000000000000000000000000000000000000003b1#MetaManagementKey#e3502768c10cea0b8ee6612b3abfe260b345d263"
 AA_DID = "did:meta:testnet:00000000000000000000000000000000000000000000000000000000000003b1"
 AA_PRIVATE = "a5fd63f2fa3bff5cc9edd33e1284b3ff77ce56e32824fb7fa91ae1afbe680a0b"
-AA_PRIVATE_JWK = jwk.JWK().from_pem(
+AA_PRIVATE_JWK = jwk.JWK.from_pem(
     SigningKey.from_string(bytes.fromhex(AA_PRIVATE), curve=SECP256k1).to_pem()
 )
 SP_RSA_PRIVATE = '{"p": "_X1MpwOUOqz5jv6suQILzoXwL-bXb4E5oz95GocSwti04zYZgudcIy787DxwEis1pD8GhYDFW_Ryx4JK3AfdghtvocC7DRjWUzMgPvPR69unbSby7jRghATSWQuDamCJ_5l5tO7c5DA9hIB0FIr8QfkBkDPSh1jZMpk0hORk_m8", "kty": "RSA", "q": "yIfcL9IeLSbByjsKYoRq_KZ6ncAx8le1GWwJ4evKJ-IaGGF_CaZH7EmAsuyMaW7tTdc8OBI7kCNKn9MyZPTd704rOgUI-cTfnb9AFMVgs66KECN0XF8RBrgrw83BUoEvkRp477dM1fVWpL9bUpZKpQ-gDCsustgQFceauIHi4Zc", "d": "rflpFBXz9GKv-k3Sulc5AZfhrpE8YzI0YevgjKCidsgINnK33urJa9MwWeGqmvtbZNO5JKiA3rywXU_qXjig76-s6cwARkd8nR1oMz6RM0DsBq4elVm-bpwW9dOOd-NZvx-V0-OwM2AzC4d3LMQJzg9HDEn0CgM_U5naP9ryY7nsppWiYqyOW5TwgB37qOV0PWgTRfpWXu_FXsYmTLvwfJ0nnI5ymlTazZX6why9OI-CqvI76e46lt2ZqQ3u-Zz9JxSpkWbuBLLct7cRqDtiJuTaJMG7qmFqR72Ufu95M6ZhSRCrrvpj6nk4dZcru0L4kPJhGpnpjcOE_ZdNf_X85Q", "e": "AQAB", "qi": "3Lyv2sSHPJzO2ZQ-GkiMBACzXYWIv7YnxyqAoriYV16pJgnOvEKHk_mRLlabiPCBkevFyHe-4faxqbnvrcbv_6wDrAhXrc-AurdQT76QNTYlZyaSUp5-iuykPGkU9RYR6XKQBtHaR7ms25Q8W8CjtcMC8M2iCrT7IQZWaPfzQQ4", "dp": "QQjal6bVatBiHou8aKLbwJqgasnAz_zJetaYDXRGHfNXRUvl863D98rgXQOMhTzMwFzjIXFOMS9gG0uURStHa0_6rfcyhkOvCR1-0mffnbF3HQv3G6IYeQZ7qRjJGIu4G_mWPhNiXLD7t3j1TyfxXEO0YPjKtKrY3qBr1wR53MU", "dq": "t-ghf5nsIuyQfa937rISjHMBsPs6006swAvdZFyiocEyvXls0KS3AXTHm1Bl1avt5p2mlKXkCmTTY5CFfyEzCO1fp25GtQphKoLjeikqbp977yEU7kIhk1AEkyZ4Tfo8bY8hqnco-HBwbdcxIaTEAG08Euznfw24csEEnIJCWTE", "n": "xpBq_O7N9QSCSzOi26Iop4dtMLF0F3HCsu43yxytGq9k2CtTwaYvQr0vK0tsWBGu7BSx_q3DurUHmfWunCJTPOPErO6-A5MR5NKCSIfxxvhQrPS2d4dJPzm4PSS3JPsUs7YIOkkgG-SVVX_Dvh7jv4mugl_BvoEgklgvOtv9zPX3FOBVcD5bLxe2JCA5bAyTRTBczeOU9D_LcVeTdIkvw7XMgbyzvH2fH50RULUchE62uy-mQzSEGCsv6Un7ybc5c8cmbnYJA2e0UQVDc7TXyXYIDtOhPuxm-XbhUb_b28n8IKwTefNLl_9Ffwb2r0gIu89iaJ8VP4ag3fJGCC-ieQ"}'
-SP_RSA_PRIVATE_JWK = jwk.JWK().from_json(SP_RSA_PRIVATE)
+SP_RSA_PRIVATE_JWK = jwk.JWK.from_json(SP_RSA_PRIVATE)
 
 USER_DID = "did:meta:testnet:00000000000000000000000000000000000000000000000000000000000009b4"
 USER_PRIVATE = "477cdbbe5a3774758e832ed99a3d91a5790090942d73a619aa6b223c4be014f5"
@@ -41,21 +41,21 @@ class TestAA(unittest.TestCase):
             credential_subject={'id': USER_DID, 'name': '이인용'},
             issuance_date=datetime.datetime.now()
         )
-        signed_vc1 = VerifiableSignedJWT().sign(verifiable=name_vc, kid=AA_KID, nonce='', key=AA_PRIVATE_JWK)
+        signed_vc1 = VerifiableSignedJWT.sign(verifiable=name_vc, kid=AA_KID, nonce='', key=AA_PRIVATE_JWK)
 
         name_vc = VerifiableCredential(
             types=["EmailCredential"], issuer=AA_DID,
             credential_subject={'id': USER_DID, 'email': 'inyong@coinplug.com'},
             issuance_date=datetime.datetime.now()
         )
-        signed_vc2 = VerifiableSignedJWT().sign(verifiable=name_vc, kid=AA_KID, nonce='', key=AA_PRIVATE_JWK)
+        signed_vc2 = VerifiableSignedJWT.sign(verifiable=name_vc, kid=AA_KID, nonce='', key=AA_PRIVATE_JWK)
         return [signed_vc1, signed_vc2]
 
     def test_issue_vp(self):
         vp = VerifiablePresentation(
             issuer=AA_DID, types=["UserPresentation"], verifiable_credentials=self.test_issue_vc()
         )
-        signed_vp = VerifiableSignedJWT().sign(verifiable=vp, kid=AA_KID, nonce='', key=AA_PRIVATE_JWK)
+        signed_vp = VerifiableSignedJWT.sign(verifiable=vp, kid=AA_KID, nonce='', key=AA_PRIVATE_JWK)
         return signed_vp
 
     def test_self_encrypt_vp(self):

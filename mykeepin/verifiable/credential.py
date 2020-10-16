@@ -21,7 +21,7 @@ class VerifiableCredential(Verifiable):
         super().__init__(id_=id_, types=["VerifiableCredential"] + types)
 
     @property
-    def issuer(self):
+    def issuer(self) -> str:
         return self._issuer
 
     @issuer.setter
@@ -31,7 +31,7 @@ class VerifiableCredential(Verifiable):
         self._issuer = validate_did_format(i)
 
     @property
-    def issuance_date(self):
+    def issuance_date(self) -> datetime.datetime:
         return self._issuance_date
 
     @issuance_date.setter
@@ -43,7 +43,7 @@ class VerifiableCredential(Verifiable):
         self._issuance_date = i
 
     @property
-    def expiration_date(self):
+    def expiration_date(self) -> datetime.datetime:
         return self._expiration_date
 
     @expiration_date.setter
@@ -56,7 +56,7 @@ class VerifiableCredential(Verifiable):
         self._expiration_date = e
 
     @property
-    def credential_subject(self):
+    def credential_subject(self) -> dict:
         return self._credential_subject
 
     @credential_subject.setter

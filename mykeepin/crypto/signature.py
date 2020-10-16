@@ -32,5 +32,6 @@ class Signature:
         pub_key = eth_keys.keys.ecdsa_recover(Web3.keccak(text=message), sig)
         return pub_key
 
-    def has_recover_address_from_signature(self, message: str, signature: str) -> str:
-        return self.public_key_from_signature(message, signature).to_address()
+    @classmethod
+    def has_recover_address_from_signature(cls, message: str, signature: str) -> str:
+        return cls.public_key_from_signature(message, signature).to_address()

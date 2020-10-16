@@ -41,7 +41,7 @@ class DidVerifier:
 
     @staticmethod
     def verify_signature(nonce: str, signature: str) -> str:
-        address = Signature().has_recover_address_from_signature(nonce, signature)
+        address = Signature.has_recover_address_from_signature(nonce, signature)
         return address
 
     def verify_jws(self, raw_jws: str, did_document: DidDocument or None):
@@ -67,12 +67,12 @@ class DidVerifier:
         if not user_pub_key_hex:
             return None
 
-        user_pub_key = jwk.JWK().from_pem(
+        user_pub_key = jwk.JWK.from_pem(
             VerifyingKey.from_string(
                 bytes.fromhex(user_pub_key_hex), curve=SECP256k1
             ).to_pem()
         )
-        return VerifiableSignedJWT().verify(token=raw_jws, key=user_pub_key)
+        return VerifiableSignedJWT.verify(token=raw_jws, key=user_pub_key)
 
     def extract_credentials_from_presentation(self, raw_vp: str):
         dict_vp = json.loads(raw_vp)

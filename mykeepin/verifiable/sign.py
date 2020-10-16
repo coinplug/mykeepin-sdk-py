@@ -42,11 +42,13 @@ class VerifiableSignedJWT:
             return verifier.claims
         return verifier
 
-    def sign(self, verifiable: Verifiable, kid, nonce, key: JWK):
-        return self.__sign(verifiable, "ES256K", kid, nonce, key, True)
+    @classmethod
+    def sign(cls, verifiable: Verifiable, kid, nonce, key: JWK):
+        return cls.__sign(verifiable, "ES256K", kid, nonce, key, True)
 
-    def verify(self, token, key: JWK, return_claims=False):
-        return self.__verify(token, "ES256K", key, return_claims)
+    @classmethod
+    def verify(cls, token, key: JWK, return_claims=False):
+        return cls.__verify(token, "ES256K", key, return_claims)
 
 
 
