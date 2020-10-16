@@ -1,4 +1,4 @@
 ecdsa
 web3
 requests
-git+git://git@github.com/latchset/jwcrypto.git#egg=jwcrypto
+jwcrypto
